@@ -1,20 +1,30 @@
 ﻿using FundamentosCSHARP.Models;
 using System.Text.Json;
+using System.Text.Json.Serialization;
+using System.Threading.Tasks;
 
 namespace FundamentoCSHARP
 {
     class Program
     {
-        static void Main(string[] args)
+        static async Task Main(string[] args)
         {
-            /*Cerveza chela = new Cerveza(15, "Pilsen");
-            string miJson = JsonSerializer.Serialize(chela);
-            File.WriteAllText("objeto.txt", miJson);
-            */
+            string url = "https://jsonplaceholder.typicode.com/posts";
+            HttpClient client = new HttpClient();
 
-            string miJson2 = File.ReadAllText("objeto.txt");
-            Cerveza chela = JsonSerializer.Deserialize<Cerveza>(miJson2);
-            Console.WriteLine(chela.Nombre+" "+chela.Cantidad);
+            var httpResponse = await client.GetAsync(url);
+
+            if (httpResponse.IsSuccessStatusCode)
+            {
+                var json = await httpResponse.Content.ReadAsStringAsync();
+                List<Post> post = JsonSerializer.Deserialize<List<Post>>(json);
+
+                foreach(var item in post)
+                {
+                    Console.WriteLine("id: "+item.id+"\n title: "+item.title+"\n body: "+item.body+"\n ");
+                }
+
+            }
 
         }
     }
