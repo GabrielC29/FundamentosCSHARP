@@ -11,7 +11,7 @@ namespace FundamentosCSHARP.Models
         public int Alcohol { get; set; }
         public String Marca { get; set; }
         
-        public Cerveza(int cantidad, string nombre = "Chelita 10/10") : base(nombre,cantidad)
+        public Cerveza(int cantidad,string nombre = "Chelita 10/10") : base(nombre,cantidad)
         {
 
         }

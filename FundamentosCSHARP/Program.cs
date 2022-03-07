@@ -1,5 +1,5 @@
-﻿using System;
-using FundamentosCSHARP.Models;
+﻿using FundamentosCSHARP.Models;
+using System.Text.Json;
 
 namespace FundamentoCSHARP
 {
@@ -7,34 +7,15 @@ namespace FundamentoCSHARP
     {
         static void Main(string[] args)
         {
-
-            ChelasBD chelasBD = new ChelasBD();
-
-            // Inserción de las nuevas chelas
-
-            /* Cerveza chelita = new Cerveza(22, "cristal");
-             chelita.Marca = "cristall";
-             chelita.Alcohol = 6;
-
-             chelasBD.Add(chelita);
+            /*Cerveza chela = new Cerveza(15, "Pilsen");
+            string miJson = JsonSerializer.Serialize(chela);
+            File.WriteAllText("objeto.txt", miJson);
             */
 
-            /* Cerveza chelita = new Cerveza(12, "Cristal");
-            chelita.Marca = "Cristalito";
-            chelita.Alcohol = 2;
+            string miJson2 = File.ReadAllText("objeto.txt");
+            Cerveza chela = JsonSerializer.Deserialize<Cerveza>(miJson2);
+            Console.WriteLine(chela.Nombre+" "+chela.Cantidad);
 
-            chelasBD.Edit(chelita,4);
-            */
-
-            chelasBD.Delete(4);
-
-            // Obtener todas las chelas 
-            var chelas = chelasBD.Get();
-
-            foreach(var item in chelas)
-            {
-                Console.WriteLine(item.Nombre);
-            }
         }
     }
 }
