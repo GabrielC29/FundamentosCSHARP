@@ -1,4 +1,5 @@
 ﻿using FundamentosCSHARP.Models;
+using FundamentosCSHARP.Service;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
@@ -9,40 +10,15 @@ namespace FundamentoCSHARP
     {
         static async Task Main(string[] args)
         {
-            string url = "https://jsonplaceholder.typicode.com/posts/20"; //POST, DELETE, UPDATE
-            string url2 = "https://jsonplaceholder.typicode.com/posts"; //GET
+            var chela = new Cerveza() { Alcohol = 5, Marca = "Cerveza", Nombre = "Cristal", Cantidad = 22 };
 
-            HttpClient client = new HttpClient();
+            var post = new Post() { body = "cuerpazoooo", title = "titulo", userId = 22 };
 
-            Post post = new Post()
-            {
-                userId = 22,
-                body = "Habla p loco",
-                title = "Saludazo"
-            };
+            SendRequest<Post> service = new SendRequest<Post>();
 
-            var data = JsonSerializer.Serialize<Post>(post);
-            HttpContent content = new StringContent(data,System.Text.Encoding.UTF8,"application/json");
+            var cervezaRespuesta = await service.Send(post);
 
-            var httpResponse = await client.PutAsync(url,content);
-
-            var httpResponse2 = await client.GetAsync(url2);
-
-            if (httpResponse.IsSuccessStatusCode)
-            {
-                var result = await httpResponse.Content.ReadAsStringAsync();
-
-                var result2 = await httpResponse2.Content.ReadAsStringAsync();
-
-                var postre = JsonSerializer.Deserialize<Post>(result);
-
-                List<Post> posts = JsonSerializer.Deserialize<List<Post>>(result2);
-
-                // var postResult = JsonSerializer.Deserialize<Post>(result);
-
-                Console.WriteLine(postre.title);
-            }
-
+            Console.WriteLine(cervezaRespuesta.body+" "+cervezaRespuesta.id);
         }
     }
 }

@@ -10,7 +10,12 @@ namespace FundamentosCSHARP.Models
     {
         public int Alcohol { get; set; }
         public String Marca { get; set; }
-        
+        public int id { get; set; }
+
+        public Cerveza() : base(null,0)
+        {
+
+        }
         public Cerveza(int cantidad,string nombre = "Chelita 10/10") : base(nombre,cantidad)
         {
 
