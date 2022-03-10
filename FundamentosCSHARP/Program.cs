@@ -1,4 +1,5 @@
-﻿using FundamentosCSHARP.Models;
+﻿using FundamentosCSHARP.Errors;
+using FundamentosCSHARP.Models;
 using FundamentosCSHARP.Service;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -10,42 +11,37 @@ namespace FundamentoCSHARP
     {
         static async Task Main(string[] args)
         {
-
-            List<Bar> bares = new List<Bar>()
+            try
             {
-                new Bar("El bar number 1")
-                {
-                    chelas = new List<Cerveza>()
-                    {
-                        new Cerveza() { Nombre = "Cristal", Marca = "Chela 1", Alcohol = 6, Cantidad = 23},
-                        new Cerveza() { Nombre = "Pilsen", Marca = "Chela 2", Alcohol = 5, Cantidad = 14},
-                        new Cerveza() { Nombre = "Cusqueña", Marca = "Chela 3", Alcohol = 6, Cantidad = 16},
-                    }
-                },
+                var buscarChela = new BuscarChela();
+                var cantidad = buscarChela.GetCantidad("Pilsen2");
+                Console.WriteLine("Todo nice");
+            }
 
-                new Bar("Terrible bar 2")
-                {
-                    chelas = new List<Cerveza>()
-                    {
-                        new Cerveza() { Nombre = "Corona", Marca = "Chela 4", Alcohol = 4, Cantidad = 22},
-                        new Cerveza() { Nombre = "Gabo", Marca = "Chela 5", Alcohol = 7, Cantidad = 17}
-                    }
-                },
+            catch(ChelaNoEncontrada ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
 
-                new Bar("Bar new")
-            };
+            catch(InvalidOperationException ex)
+            {
+                Console.WriteLine("Cayó en una operación inválida");
+            }
 
-            var bar = (from p in bares
-                      where p.chelas.Where(c => c.Cantidad >20).Count()>0
-                      select new BarData(p.Nombre)
-                      {
-                          bebidas = (from c in p.chelas
-                                      select new Bebida(c.Nombre,c.Cantidad)
-                                      ).ToList()
-                      }
-                      ).ToList();
+            catch (FieldAccessException ex)
+            {
+                Console.WriteLine("Atrapado prro");
+            }
 
-            Console.WriteLine(bar.Count);
-        }
+            catch(Exception ex)
+            {
+                Console.WriteLine("Excepción general");
+            }
+
+            finally
+            {
+                Console.WriteLine("Siempre se ejecuta");
+            }
+        }    
     }
 }
