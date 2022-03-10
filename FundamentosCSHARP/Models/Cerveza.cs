@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace FundamentosCSHARP.Models
 {
-    class Cerveza : Bebida
+    public class Cerveza : Bebida
     {
         public int Alcohol { get; set; }
         public String Marca { get; set; }
